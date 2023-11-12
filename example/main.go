@@ -4,8 +4,8 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/vovanec/log/log"
-	"github.com/vovanec/log/log/logattrs"
+	"github.com/vovanec/log"
+	"github.com/vovanec/log/logattrs"
 )
 
 func doSomethingElse(ctx context.Context) {

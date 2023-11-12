@@ -6,7 +6,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/vovanec/log/log/logattrs"
+	"github.com/vovanec/log/logattrs"
 )
 
 func Initialize(level slog.Level) {
