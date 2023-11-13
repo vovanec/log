@@ -40,3 +40,26 @@ func Bool(key string, value bool) *Attrs {
 func Time(key string, value time.Time) *Attrs {
 	return New().AddTime(key, value)
 }
+
+func Group(key string, attr *Attrs) *Attrs {
+	return New().AddGroup(key, attr)
+}
+
+func Any(key string, value any) *Attrs {
+	return New().AddAny(key, value)
+}
+
+func FromMap(m map[string]any) *Attrs {
+	attr := New()
+	for k, a := range m {
+		switch v := a.(type) {
+		case *Attrs:
+			attr.AddGroup(k, v)
+		case LogAttrs:
+			attr.Add(v)
+		default:
+			attr.AddAny(k, v)
+		}
+	}
+	return attr
+}

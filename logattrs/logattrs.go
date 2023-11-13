@@ -97,12 +97,20 @@ func (a *Attrs) AddDuration(key string, value time.Duration) *Attrs {
 	return a.addAttr(slog.Duration(key, value))
 }
 
+func (a *Attrs) AddAny(key string, value any) *Attrs {
+	return a.addAttr(slog.Any(key, value))
+}
+
 // AddContext adds log attributes (if there are any) from passed context.
 func (a *Attrs) AddContext(ctx context.Context) *Attrs {
 	if attr, ok := ctx.Value(logAttrCtxKey).(*Attrs); ok {
 		return a.Add(attr)
 	}
 	return a
+}
+
+func (a *Attrs) AddGroup(key string, g *Attrs) *Attrs {
+	return a.addAttr(slog.Group(key, g.asSlice()...))
 }
 
 // Context returns new context with log attributes and parent context.
