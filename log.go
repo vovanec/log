@@ -4,18 +4,35 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
-	"os"
 
 	"github.com/vovanec/log/logattrs"
 )
 
-func Initialize(level slog.Level) {
-	slog.SetDefault(
-		slog.New(slog.NewJSONHandler(
-			os.Stderr,
-			&slog.HandlerOptions{Level: level},
-		)),
+func Initialize(opts ...Option) {
+
+	var (
+		conf    = newConfig(opts...)
+		handler slog.Handler
 	)
+
+	logLevel, err := toSlogLevel(conf.level)
+	if err != nil {
+		panic(err)
+	}
+
+	if conf.textFormat {
+		handler = slog.NewTextHandler(
+			conf.output,
+			&slog.HandlerOptions{Level: logLevel},
+		)
+	} else {
+		handler = slog.NewJSONHandler(
+			conf.output,
+			&slog.HandlerOptions{Level: logLevel},
+		)
+	}
+
+	slog.SetDefault(slog.New(handler))
 }
 
 func Debug(msg string, attr ...*logattrs.Attrs) {

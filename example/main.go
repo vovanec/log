@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"log/slog"
 
 	"github.com/vovanec/log"
 	"github.com/vovanec/log/logattrs"
@@ -20,8 +19,7 @@ func doSomething(ctx context.Context) {
 }
 
 func main() {
-	log.Initialize(slog.LevelInfo)
-
+	log.Initialize(log.WithLevel(log.LevelDebug))
 	ctx := logattrs.String("app.name", "main").
 		Context(context.Background())
 	doSomething(ctx)
